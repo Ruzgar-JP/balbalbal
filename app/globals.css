@@ -151,7 +151,7 @@
 .section-hero p,
 .section-hero .text-slate-600 { color: rgba(255,255,255,0.72) !important; }
 .section-hero .text-slate-500 { color: rgba(255,255,255,0.50) !important; }
-.section-hero .text-brand-primary { color: #ffffff !important; }
+.section-hero .text-brand-primary { color: #2634eb !important; }
 
 /* ── HERO ORBS ── */
 .hero-orb-1 {
