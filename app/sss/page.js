@@ -81,11 +81,13 @@ export default function SSSPage() {
             <h2 className="text-2xl font-bold text-white mb-4">{g.title}</h2>
             <Accordion type="single" collapsible className="w-full">
               {g.items.map(([q, a], i) => (
-                <AccordionItem key={i} value={`${g.title}-${i}`} className="border-b border-slate-200 last:border-0">
-                  <AccordionTrigger className="text-left text-base font-medium text-brand-primary hover:no-underline hover:text-brand-accent">{q}</AccordionTrigger>
-                  <AccordionContent className="text-sm text-slate-600 leading-relaxed" dangerouslySetInnerHTML={{ __html: a }} />
-                </AccordionItem>
-              ))}
+                    <AccordionItem key={i} value={`${g.title}-${i}`}>
+                      <AccordionTrigger>{q}</AccordionTrigger>
+                      <AccordionContent className="text-sm text-slate-600 leading-relaxed">
+                        {a}
+                      </AccordionContent>
+                    </AccordionItem>
+                  ))}
             </Accordion>
           </div>
         ))}
