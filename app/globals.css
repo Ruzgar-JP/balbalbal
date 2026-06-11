@@ -330,7 +330,7 @@
 .section-dark .border-t,
 .section-mid-dark .border-t { border-color: rgba(255,255,255,0.10) !important; }
 .section-dark .border-b,
-.section-mid-dark .border-b { border-color: rgba(255,255,255,0.10) !important; }
+.section-mid-dark .border-b { border-color: rgba(255, 255, 255, 0.1) !important; }
 .section-dark [data-state] button,
 .section-mid-dark [data-state] button { color: #ffffff !important; }
 
