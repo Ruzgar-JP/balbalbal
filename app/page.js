@@ -180,7 +180,7 @@ export default function HomePage() {
                 </div>
                 <div className="mt-5 flex items-center justify-between rounded-xl border border-slate-200 bg-white px-4 py-3 text-xs">
                   <div className="flex items-center gap-2 text-slate-600">
-                    <CheckCircle2 className="h-4 w-4 text-brand-success" />
+                    <CheckCircle2 className="h-4 w-4 text-brand-success white-text" />
                     <span>Negatif bakiye koruması · Lisanslı bağlı kuruluşlar</span>
                   </div>
                 </div>
