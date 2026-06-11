@@ -32,7 +32,7 @@ const groups = [
       ['Para çekme komisyonu var mı?', 'Novatrix Markets komisyon almaz. Aralık bankası veya ödeme servis sağlayıcısı ücret yansıtabilir.'],
       ['Aynı yöntemle mi para çekmek zorundayım?', 'Evet. AML düzenlemeleri gereği para çekme yatırım yapılan yöntemle gerçekleştirilir.'],
       ['Minimum çekim tutarı nedir?', 'Minimum çekim tutarı 10 USD’dir.'],
-      ['Para çekme talebimi nasıl iptal ederim?', 'Müşteri panelinden &quot;Bekleyen İşlemler&quot; bölümünden talebinizi işleme alınmadan iptal edebilirsiniz.'],
+      ['Para çekme talebimi nasıl iptal ederim?', 'Müşteri panelinden "Bekleyen İşlemler" bölümünden talebinizi işleme alınmadan iptal edebilirsiniz.'],
     ],
   },
   {
@@ -41,7 +41,7 @@ const groups = [
       ['Hangi platformları destekliyorsunuz?', 'MetaTrader 4, MetaTrader 5, cTrader ve TradingView platformlarını web, masaüstü, iOS ve Android olarak destekliyoruz.'],
       ['EA / Algoritmik işlem yapabilir miyim?', 'Evet. MT4 ve MT5’te MQL4/MQL5 EA’ları ve cTrader’da cBots tam destekli. Scalping ve hedging her hesap türünde serbesttir.'],
       ['VPS hizmeti ücretsiz mi?', 'Aktif bakiyesi 5.000 USD’nin üzerinde olan veya aylık 10 lot üzeri işlem yapan müşterilerimize VPS ücretsiz sunulur.'],
-      ['TradingView ile bağlantı nasıl kurulur?', 'TradingView üzerinde &ldquo;Broker seç&rdquo; menüsünden Novatrix Markets’ı seçip canlı hesapınızla giriş yapın.'],
+      ['TradingView ile bağlantı nasıl kurulur?', 'TradingView üzerinde "Broker seç" menüsünden Novatrix Markets’ı seçip canlı hesapınızla giriş yapın.'],
       ['Mobil işlem yapabilir miyim?', 'Evet. Tüm platformların iOS ve Android uygulamaları mevcuttur.'],
     ],
   },
@@ -59,7 +59,7 @@ const groups = [
     title: 'Kimlik Doğrulama (KYC)',
     items: [
       ['KYC için hangi belgeler gerekli?', 'Geçerli kimlik belgesi (nüfus cüzdanı, pasaport veya ehliyet) ve son 6 ay içinde çıkmış adres belgesi (fatura, banka ekstresi vb.).'],
-      ['Belgelerimi nasıl yükleyebilirim?', 'Müşteri panelinizden &ldquo;KYC Belgeleri&rdquo; bölümü üzerinden yükleyebilirsiniz. Belgeler 24 saat içinde incelenir.'],
+      ['Belgelerimi nasıl yükleyebilirim?', 'Müşteri panelinizden "KYC Belgeleri" bölümü üzerinden yükleyebilirsiniz. Belgeler 24 saat içinde incelenir.'],
       ['KYC tamamlanmadan işlem yapabilir miyim?', 'Demo hesabınızda kesintisiz işlem yapabilirsiniz. Gerçek hesabınızda KYC tamamlanana kadar çekim kısıtlıdır.'],
       ['KYC süreci ne kadar sürer?', 'Ortalama 4 saat, en geç 24 saat.'],
       ['Belgelerim onaylanmazsa ne olur?', 'Destek ekibimiz nedenini size bildirir ve gerekli belgeyi tekrar yükleyebilirsiniz.'],
