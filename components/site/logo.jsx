@@ -5,7 +5,7 @@ export default function Logo({ className = '' }) {
   return (
     <Link href="/" className={className}>
       <Image
-        src="/logo.png"
+        src="/public/logo.png"
         alt="Logo"
         width={180}
         height={60}
