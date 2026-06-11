@@ -15,7 +15,7 @@ export default function Page() {
       >
         <div className="flex flex-wrap gap-3">
           <Link href="/iletisim?live=1" className="btn-accent inline-flex h-11 items-center rounded-md px-5 text-sm">Gerçek Hesap Aç <ArrowRight className="ml-2 h-4 w-4" /></Link>
-          <Link href="/iletisim?demo=1" className="inline-flex h-11 items-center rounded-md border border-slate-300 bg-white px-5 text-sm font-medium text-brand-primary hover:bg-slate-5 text-blue ">Demo ile Dene</Link>
+          <Link href="/iletisim?demo=1" className="inline-flex h-11 items-center rounded-md border border-slate-300 bg-white px-5 text-sm font-medium text-slate-900 hover:bg-slate-5">Demo ile Dene</Link>
         </div>
       </PageHero>
 
