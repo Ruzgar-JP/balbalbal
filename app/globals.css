@@ -1,0 +1,476 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 215 78% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 215 78% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 215 78% 11%;
+    --primary: 213 76% 12%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 215 78% 11%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 45%;
+    --accent: 221 83% 53%;
+    --accent-foreground: 215 78% 4%;
+    --destructive: 348 80% 55%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 221 83% 53%;
+    --chart-1: 221 83% 53%;
+    --chart-2: 217 91% 60%;
+    --chart-3: 220 70% 50%;
+    --chart-4: 35 95% 55%;
+    --chart-5: 280 70% 60%;
+    --radius: 0.75rem;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 215 78% 11%;
+    --sidebar-primary: 194 100% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 210 40% 96%;
+    --sidebar-accent-foreground: 215 78% 11%;
+    --sidebar-border: 214 32% 91%;
+    --sidebar-ring: 194 100% 50%;
+  }
+}
+
+@layer base {
+  * { @apply border-border; }
+  html { scroll-behavior: smooth; }
+  body {
+    @apply text-foreground antialiased;
+    font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+    background: #ffffff;
+  }
+  h1, h2, h3, h4, h5, h6 { @apply font-display tracking-tight; }
+}
+
+/* ═══════════════════════════════════════════════
+   KEYFRAMES  — tüm animasyonlar burada
+   ═══════════════════════════════════════════════ */
+
+/* Orb kayma hareketi — hero orb'larında kullanılır */
+@keyframes orbFloat {
+  0%   { opacity: 0.82; transform: translate(0px,    0px)   scale(1);    }
+  25%  { opacity: 1.00; transform: translate(32px,  -26px)  scale(1.06); }
+  50%  { opacity: 0.88; transform: translate(-22px, -50px)  scale(0.96); }
+  75%  { opacity: 0.97; transform: translate(-36px, -14px)  scale(1.07); }
+  100% { opacity: 0.82; transform: translate(0px,    0px)   scale(1);    }
+}
+
+/* Section dark orb — daha basit kayma */
+@keyframes sectionOrbFloat {
+  0%, 100% { transform: translate(0, 0)       scale(1);    opacity: 0.80; }
+  50%       { transform: translate(-35px, 35px) scale(1.10); opacity: 1.00; }
+}
+
+/* Hero grid kayması */
+@keyframes gridDrift {
+  0%   { background-position: 0 0, 0 0; }
+  100% { background-position: 52px 52px, 52px 52px; }
+}
+
+/* Beam/ışın titremesi */
+@keyframes beamPulse {
+  0%, 100% { opacity: 0.70; }
+  50%       { opacity: 1.00; }
+}
+
+/* Gradyan animasyonu */
+@keyframes gradientMove {
+  0%   { background-position: 0%   50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0%   50%; }
+}
+
+/* Yüzen kart hareketi */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-12px); }
+}
+
+/* ═══════════════════════════════════════════════
+   SECTION THEMES
+   ═══════════════════════════════════════════════ */
+
+/* ── HERO ── */
+.section-hero {
+  background: linear-gradient(145deg, #020810 0%, #050F20 40%, #071A35 75%, #0B2D5B 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Animasyonlu grid doku */
+.section-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(37,99,235,.10) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(37,99,235,.10) 1px, transparent 1px);
+  background-size: 52px 52px;
+  /* ↑ Hız: 35s → 18s */
+  animation: gridDrift 18s linear infinite;
+  mask-image: radial-gradient(ellipse 90% 90% at 50% 50%, black 10%, transparent 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Üstten yayılan ışın efekti */
+.section-hero::after {
+  content: "";
+  position: absolute;
+  width: 900px;
+  height: 600px;
+  top: -200px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: conic-gradient(
+    from 268deg at 50% 0%,
+    transparent 0deg,
+    rgba(37,99,235,.28) 5deg,   /* ↑ Parlaklık: .18 → .28 */
+    transparent 10deg
+  );
+  filter: blur(18px);
+  /* ↑ Hız: 9s → 4.5s */
+  animation: beamPulse 4.5s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.section-hero > * { position: relative; z-index: 1; }
+.section-hero h1, .section-hero h2, .section-hero h3 { color: #ffffff; }
+.section-hero p,
+.section-hero .text-slate-600 { color: rgba(255,255,255,0.72) !important; }
+.section-hero .text-slate-500 { color: rgba(255,255,255,0.50) !important; }
+.section-hero .text-brand-primary { color: #ffffff !important; }
+
+/* ── HERO ORBS ── */
+.hero-orb-1 {
+  position: absolute;
+  width: 700px; height: 700px;
+  top: -250px; left: -200px;
+  /* ↑ Parlaklık: .28 → .52 */
+  background: radial-gradient(circle, rgba(37,99,235,.52) 0%, transparent 65%);
+  /* ↑ Blur azaltıldı: 80px → 60px  (daha keskin = daha görünür) */
+  filter: blur(60px);
+  /* ↑ Hız: 20s → 10s */
+  animation: orbFloat 5s ease-in-out infinite;
+  pointer-events: none; z-index: 0;
+}
+.hero-orb-2 {
+  position: absolute;
+  width: 500px; height: 500px;
+  bottom: -100px; right: -100px;
+  /* ↑ Parlaklık: rgba(11,45,91,.40) → parlak mavi .55 */
+  background: radial-gradient(circle, rgba(21,75,185,.55) 0%, transparent 65%);
+  filter: blur(55px);
+  /* ↑ Hız: 26s → 13s */
+  animation: orbFloat 8s ease-in-out infinite reverse;
+  pointer-events: none; z-index: 0;
+}
+.hero-orb-3 {
+  position: absolute;
+  width: 400px; height: 200px;
+  bottom: 0; left: 0; right: 0; margin: auto;
+  /* ↑ Parlaklık: .20 → .40 */
+  background: radial-gradient(ellipse, rgba(37,99,235,.40) 0%, transparent 70%);
+  filter: blur(28px);
+  /* ↑ Hız: 10s → 5s */
+  animation: beamPulse 2s ease-in-out infinite;
+  pointer-events: none; z-index: 0;
+}
+
+/* ── DARK section ── */
+.section-dark {
+  background: linear-gradient(160deg, #030B17 0%, #071A35 55%, #0B2D5B 100%);
+  position: relative;
+  overflow: hidden;
+}
+.section-dark h1, .section-dark h2, .section-dark h3, .section-dark h4 { color: #ffffff; }
+.section-dark p                   { color: rgba(255,255,255,0.70); }
+.section-dark .text-slate-600     { color: rgba(255,255,255,0.65) !important; }
+.section-dark .text-slate-500     { color: rgba(255,255,255,0.50) !important; }
+.section-dark .text-brand-primary { color: #ffffff !important; }
+.section-dark .divider-gradient {
+  background: linear-gradient(90deg, transparent 0%, rgba(37,99,235,0.7) 50%, transparent 100%);
+}
+
+/* Grid doku */
+.section-dark::before {
+  content: "";
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(37,99,235,.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(37,99,235,.08) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 100% 100% at 50% 50%, black 20%, transparent 100%);
+  pointer-events: none; z-index: 0;
+}
+.section-dark > * { position: relative; z-index: 1; }
+
+/* Orb */
+.section-dark::after {
+  content: "";
+  position: absolute;
+  width: 600px; height: 600px;
+  top: -150px; right: -150px;
+  /* ↑ Parlaklık: .22 → .45 */
+  background: radial-gradient(circle, rgba(37,99,235,.45) 0%, transparent 65%);
+  filter: blur(60px);
+  pointer-events: none; z-index: 0;
+  /* ↑ Hız: 14s → 7s */
+  animation: sectionOrbFloat 7s ease-in-out infinite;
+}
+
+/* ── LIGHT sections ── */
+.section-light     { background: #ffffff; position: relative; }
+.section-light-alt { background: linear-gradient(180deg, #f8fbff 0%, #f0f5ff 100%); position: relative; }
+
+/* ── MID-DARK section ── */
+.section-mid-dark {
+  background: linear-gradient(160deg, #071A35 0%, #0B2D5B 100%);
+  position: relative; overflow: hidden;
+}
+.section-mid-dark::before {
+  content: "";
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none; z-index: 0;
+}
+.section-mid-dark > * { position: relative; z-index: 1; }
+.section-mid-dark h2, .section-mid-dark h3     { color: #ffffff; }
+.section-mid-dark p,
+.section-mid-dark .text-slate-600              { color: rgba(255,255,255,0.70) !important; }
+.section-mid-dark .text-slate-500              { color: rgba(255,255,255,0.50) !important; }
+.section-mid-dark .text-brand-primary          { color: #ffffff !important; }
+.section-mid-dark .text-brand-accent           { color: #ffffff !important; }
+
+/* ═══════════════════════════════════════════════
+   DARK BG ADAPTASYONLARI
+   ═══════════════════════════════════════════════ */
+
+/* Surface card on dark */
+.section-dark .surface-card,
+.section-mid-dark .surface-card,
+.section-hero .surface-card {
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(255,255,255,0.12);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.05) inset, 0 12px 28px -12px rgba(0,0,0,0.4);
+}
+.section-dark .surface-card-hover:hover,
+.section-mid-dark .surface-card-hover:hover {
+  background: rgba(255,255,255,0.10);
+  border-color: rgba(37,99,235,.50);
+  box-shadow: 0 30px 60px -20px rgba(37,99,235,.30), 0 0 0 1px rgba(37,99,235,.25);
+}
+.section-dark .surface-card h3,
+.section-dark .surface-card .text-brand-primary,
+.section-mid-dark .surface-card h3,
+.section-mid-dark .surface-card .text-brand-primary { color: #ffffff !important; }
+.section-dark .surface-card p,
+.section-dark .surface-card .text-slate-600,
+.section-mid-dark .surface-card .text-slate-600 { color: rgba(255,255,255,0.65) !important; }
+
+/* Chip on dark */
+.section-dark .chip,
+.section-mid-dark .chip,
+.section-hero .chip {
+  border-color: rgba(37,99,235,0.5);
+  background: rgba(37,99,235,0.18);
+  color: #93C5FD;
+}
+.section-dark .chip-dot,
+.section-mid-dark .chip-dot,
+.section-hero .chip-dot {
+  background: #60A5FA;
+  box-shadow: 0 0 8px rgba(96,165,250,0.8);
+}
+
+/* Glass panel on dark */
+.section-hero .glass-strong {
+  background: rgba(255,255,255,0.07);
+  border-color: rgba(255,255,255,0.13);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.08) inset, 0 24px 60px -24px rgba(0,0,0,0.5);
+}
+.section-hero .glass-strong .surface-card {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.10);
+}
+
+/* Ghost button on dark */
+.section-dark .btn-ghost-dark,
+.section-mid-dark .btn-ghost-dark,
+.section-hero .btn-ghost-dark {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.20);
+  color: #ffffff;
+  font-weight: 600;
+  transition: background .2s ease, border-color .2s ease;
+}
+.section-dark .btn-ghost-dark:hover,
+.section-mid-dark .btn-ghost-dark:hover,
+.section-hero .btn-ghost-dark:hover {
+  background: rgba(255,255,255,0.14);
+  border-color: rgba(255,255,255,0.35);
+}
+
+/* Borders & Accordion on dark */
+.section-dark .border-t,
+.section-mid-dark .border-t { border-color: rgba(255,255,255,0.10) !important; }
+.section-dark .border-b,
+.section-mid-dark .border-b { border-color: rgba(255,255,255,0.10) !important; }
+.section-dark [data-state] button,
+.section-mid-dark [data-state] button { color: #ffffff !important; }
+
+/* Text gradient override on dark */
+.section-hero .text-gradient,
+.section-dark .text-gradient {
+  background: linear-gradient(135deg, #60A5FA 0%, #93C5FD 50%, #BFDBFE 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ═══════════════════════════════════════════════
+   GLOBAL COMPONENTS
+   ═══════════════════════════════════════════════ */
+@layer components {
+  .glass {
+    background: rgba(255,255,255,0.7);
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    border: 1px solid rgba(7,26,53,0.08);
+  }
+  .glass-strong {
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(18px) saturate(160%);
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    border: 1px solid rgba(7,26,53,0.10);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.6) inset, 0 24px 60px -24px rgba(7,26,53,0.18);
+  }
+  .surface-card {
+    background: #FFFFFF;
+    border: 1px solid #E6ECF2;
+    box-shadow: 0 1px 0 rgba(7,26,53,0.02), 0 12px 24px -16px rgba(7,26,53,0.10);
+    border-radius: 1rem;
+  }
+  .surface-card-hover {
+    transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease, background .25s ease;
+  }
+  .surface-card-hover:hover {
+    transform: translateY(-6px);
+    border-color: rgba(37,99,235,.35);
+    box-shadow: 0 30px 60px -25px rgba(37,99,235,.25), 0 0 0 1px rgba(37,99,235,.15);
+  }
+  .glow-accent {
+    box-shadow: 0 0 0 1px rgba(37,99,235,0.18), 0 10px 30px -10px rgba(37,99,235,0.35);
+  }
+  .text-gradient {
+    background: linear-gradient(135deg, #071A35 0%, #0B2D5B 50%, #1D4ED8 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .text-gradient-accent {
+    background: linear-gradient(120deg, #0051ff 0%, #03265f 25%, #266cc2 50%, #3467a1 75%, #1D4ED8 100%);
+    background-size: 200% 200%;
+    /* ↑ Hız: 6s → 3s */
+    animation: gradientMove 3s ease infinite;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+  .bg-grid {
+    background-image:
+      linear-gradient(to right, rgba(7,26,53,0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(7,26,53,0.05) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+  .divider-gradient {
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, rgba(37,99,235,0.55) 50%, transparent 100%);
+  }
+  .btn-accent {
+    background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
+    color: #FFFFFF;
+    font-weight: 600;
+    box-shadow: 0 8px 24px -8px rgba(37,99,235,0.55), inset 0 1px 0 rgba(255,255,255,0.30);
+    transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
+  }
+  .btn-accent:hover { transform: translateY(-1px); filter: brightness(1.08); box-shadow: 0 12px 28px -10px rgba(37,99,235,0.75); }
+  .btn-primary-dark {
+    background: linear-gradient(135deg, #071A35 0%, #0B2D5B 100%);
+    color: #FFFFFF;
+    font-weight: 600;
+    box-shadow: 0 8px 24px -8px rgba(7,26,53,0.35), inset 0 1px 0 rgba(255,255,255,0.10);
+    transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
+  }
+  .btn-primary-dark:hover { transform: translateY(-1px); filter: brightness(1.08); }
+  .btn-success {
+    background: linear-gradient(135deg, #60A5FA 0%, #00B071 100%);
+    color: #03210E;
+    font-weight: 600;
+    box-shadow: 0 8px 24px -8px rgba(96,165,250,0.55);
+  }
+  .ring-accent { box-shadow: 0 0 0 1px rgba(37,99,235,0.35), 0 0 24px -6px rgba(37,99,235,0.45); }
+  .chip {
+    @apply inline-flex items-center gap-2 rounded-full border px-3 py-1 text-[11px] font-medium uppercase tracking-[0.18em];
+    border-color: rgba(37,99,235,0.25);
+    background: rgba(37,99,235,0.08);
+    color: #2563EB;
+  }
+  .chip-dot {
+    @apply h-1.5 w-1.5 rounded-full;
+    background: #2563EB;
+    box-shadow: 0 0 8px rgba(37,99,235,0.6);
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   UTILITIES
+   ═══════════════════════════════════════════════ */
+@layer utilities {
+  .mask-fade-edges { mask-image: linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%); }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+}
+
+/* Float cards */
+.float-card       { animation: float 6s ease-in-out infinite; }
+.float-card-delay { animation: float 6s ease-in-out infinite 2s; }
+
+/* Section dividers */
+.section-divider-down {
+  position: absolute; bottom: -1px; left: 0; right: 0; height: 60px;
+  background: inherit;
+  clip-path: polygon(0 0, 100% 60%, 100% 100%, 0 100%);
+}
+.section-divider-up {
+  position: absolute; top: -1px; left: 0; right: 0; height: 60px;
+  background: inherit;
+  clip-path: polygon(0 0, 100% 0, 100% 40%, 0 100%);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .section-hero::before,
+  .section-hero::after,
+  .hero-orb-1, .hero-orb-2, .hero-orb-3,
+  .section-dark::after,
+  .text-gradient-accent {
+    animation: none !important;
+  }
+}
