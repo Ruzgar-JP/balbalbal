@@ -65,9 +65,8 @@ function IletisimInner() {
               <h3 className="mt-4 text-lg font-semibold text-brand-primary">7/24 Destek</h3>
               <p className="mt-2 text-sm text-slate-600">Uzman Türkçe destek ekibimiz haftanın her günü hizmetinizde.</p>
               <div className="mt-4 space-y-2 text-sm">
-                <div className="flex items-center gap-2 text-slate-700"><Phone className="h-4 w-4 text-brand-accent" /><span>+90 (212) 000 00 00</span></div>
+        
                 <div className="flex items-center gap-2 text-slate-700"><Mail className="h-4 w-4 text-brand-accent" /><span>destek@capitalmarket.com</span></div>
-                <div className="flex items-center gap-2 text-slate-700"><MessageCircle className="h-4 w-4 text-brand-accent" /><span>Canlı Sohbet (sağ alt)</span></div>
               </div>
             </div>
             <div className="rounded-2xl border border-slate-200 bg-white p-6">

@@ -60,7 +60,7 @@ export default function SiteFooter() {
             </p>
             <div className="mt-5 space-y-2 text-sm text-slate-600">
               <div className="flex items-center gap-2"><Mail className="h-4 w-4 text-brand-accent" /><span>destek@capitalmarket.com</span></div>
-              <div className="flex items-center gap-2"><Phone className="h-4 w-4 text-brand-accent" /><span>+90 (212) 000 00 00</span></div>
+
               <div className="flex items-center gap-2"><MapPin className="h-4 w-4 text-brand-accent" /><span>Levent, İstanbul · Londra · Sidney · Limasol</span></div>
             </div>
             <div className="mt-5 flex items-center gap-3">
