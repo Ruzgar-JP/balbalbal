@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { ArrowRight, Download, Monitor, Smartphone, Globe, Cpu, Layers, CheckCircle2, Sparkles } from 'lucide-react'
+import { Monitor, Smartphone, Globe, Cpu, Layers, CheckCircle2, Sparkles } from 'lucide-react'
 import PageHero from '@/components/site/page-hero'
 import CtaBanner from '@/components/site/cta-banner'
 import SectionHeading from '@/components/site/section-heading'
@@ -102,13 +102,13 @@ export default function PlatformlarPage() {
                   </span>
                 ))}
               </div>
-              <div className="mt-6 flex gap-2">
-                <a href="#download" className="btn-accent inline-flex h-10 items-center rounded-md px-4 text-sm">
-                  <Download className="mr-2 h-4 w-4" /> İndir
-                </a>
-                <a href="#download" className="inline-flex h-10 items-center rounded-md border border-slate-300 bg-white px-4 text-sm font-medium text-brand-primary hover:bg-slate-50">
-                  Web Terminali
-                </a>
+              <div className="mt-6 flex gap-3">
+                <Link href={`/iletisim?live=1&platform=${p.key}`} className="btn-accent inline-flex h-10 flex-1 items-center justify-center rounded-md text-sm font-semibold">
+                  Gerçek Hesap Aç
+                </Link>
+                <Link href={`/iletisim?demo=1&platform=${p.key}`} className="inline-flex h-10 flex-1 items-center justify-center rounded-md border border-slate-300 bg-white text-brand-primary hover:bg-slate-50 text-sm font-semibold">
+                  Demo Hesap Aç
+                </Link>
               </div>
             </div>
           ))}

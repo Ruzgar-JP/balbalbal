@@ -1,19 +1,7 @@
-import { MongoClient } from 'mongodb'
 import { v4 as uuidv4 } from 'uuid'
 import { NextResponse } from 'next/server'
 
-let client
-let db
-
-async function connectToMongo() {
-  if (!client) {
-    client = new MongoClient(process.env.MONGO_URL)
-    await client.connect()
-    db = client.db(process.env.DB_NAME || 'capital_market')
-  }
-  return db
-}
-
+// ─── CORS ───────────────────────────────────────────────────────────────────
 function cors(response) {
   response.headers.set('Access-Control-Allow-Origin', process.env.CORS_ORIGINS || '*')
   response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
@@ -22,28 +10,63 @@ function cors(response) {
   return response
 }
 
+// ─── Google Sheets Entegrasyonu ──────────────────────────────────────────────
+// Google Apps Script Web App URL'si .env dosyasında GOOGLE_SHEET_WEBHOOK_URL
+// olarak tanımlanmalıdır.
+// Örnek: GOOGLE_SHEET_WEBHOOK_URL=https://script.google.com/macros/s/XXX/exec
+async function sendToGoogleSheets(type, data) {
+  const webhookUrl = process.env.GOOGLE_SHEET_WEBHOOK_URL
+  if (!webhookUrl) {
+    console.warn('[Google Sheets] GOOGLE_SHEET_WEBHOOK_URL tanımlı değil, atlanıyor.')
+    return { ok: false, reason: 'no_url' }
+  }
+  try {
+    // Google Apps Script URL'leri genellikle bir 302 yönlendirmesi yapar,
+    // bu yüzden redirect: 'follow' zorunludur.
+    const res = await fetch(webhookUrl, {
+      method: 'POST',
+      redirect: 'follow',
+      headers: { 'Content-Type': 'text/plain' }, // Apps Script'te JSON parse sorunlarını önler
+      body: JSON.stringify({ type, data }),
+    })
+    const text = await res.text()
+    if (res.ok) {
+      console.log(`[Google Sheets] ${type} başarıyla gönderildi.`)
+      return { ok: true }
+    } else {
+      console.error(`[Google Sheets] Hata ${res.status}:`, text)
+      return { ok: false, status: res.status, body: text }
+    }
+  } catch (err) {
+    console.error('[Google Sheets] Bağlantı hatası:', err.message)
+    return { ok: false, error: err.message }
+  }
+}
+
+// ─── OPTIONS (preflight) ─────────────────────────────────────────────────────
 export async function OPTIONS() {
   return cors(new NextResponse(null, { status: 200 }))
 }
 
+// ─── Ana Route Handler ───────────────────────────────────────────────────────
 async function handleRoute(request, { params }) {
   const { path = [] } = params
   const route = `/${path.join('/')}`
   const method = request.method
 
   try {
-    const db = await connectToMongo()
-
+    // GET / — API durum kontrolü
     if ((route === '/' || route === '/root') && method === 'GET') {
       return cors(NextResponse.json({
         message: 'Novatrix Markets API',
         status: 'ok',
-        version: '1.0.0',
+        version: '2.0.0',
+        storage: 'google_sheets',
         endpoints: ['/api/contact', '/api/leads', '/api/newsletter'],
       }))
     }
 
-    // POST /api/contact — Genel iletişim formu
+    // ── POST /api/contact — Genel iletişim formu ─────────────────────────────
     if (route === '/contact' && method === 'POST') {
       const body = await request.json()
       const required = ['name', 'email', 'message']
@@ -60,14 +83,15 @@ async function handleRoute(request, { params }) {
         phone: body.phone ? String(body.phone).trim() : '',
         subject: body.subject ? String(body.subject).trim() : 'Genel',
         message: String(body.message).trim(),
-        createdAt: new Date(),
+        createdAt: new Date().toLocaleString('tr-TR', { timeZone: 'Europe/Istanbul' }),
       }
-      await db.collection('contact_messages').insertOne(doc)
-      const { _id, ...clean } = doc
-      return cors(NextResponse.json({ success: true, data: clean }))
+      sendToGoogleSheets('contact', doc).catch(err =>
+        console.error('[Google Sheets] contact error:', err)
+      )
+      return cors(NextResponse.json({ success: true, data: doc }))
     }
 
-    // POST /api/leads — Hesap açılış talepleri (demo / live)
+    // ── POST /api/leads — Hesap açılış talepleri (demo / live) ───────────────
     if (route === '/leads' && method === 'POST') {
       const body = await request.json()
       const required = ['fullName', 'email', 'accountType']
@@ -82,56 +106,40 @@ async function handleRoute(request, { params }) {
         fullName: String(body.fullName).trim(),
         email: String(body.email).trim().toLowerCase(),
         phone: body.phone ? String(body.phone).trim() : '',
-        country: body.country ? String(body.country).trim() : 'TR',
+        country: body.country ? String(body.country).trim() : 'Türkiye',
         accountType: String(body.accountType).trim(),
-        mode: body.mode === 'live' ? 'live' : 'demo',
+        mode: body.mode === 'live' ? 'Gerçek Hesap' : 'Demo Hesap',
         leverage: body.leverage || '1:500',
         platform: body.platform || 'MT5',
-        agreed: !!body.agreed,
-        createdAt: new Date(),
+        agreed: body.agreed ? 'Evet' : 'Hayır',
+        createdAt: new Date().toLocaleString('tr-TR', { timeZone: 'Europe/Istanbul' }),
       }
-      await db.collection('leads').insertOne(doc)
-      const { _id, ...clean } = doc
-      return cors(NextResponse.json({ success: true, data: clean }))
+      sendToGoogleSheets('lead', doc).catch(err =>
+        console.error('[Google Sheets] leads error:', err)
+      )
+      return cors(NextResponse.json({ success: true, data: doc }))
     }
 
-    // GET /api/leads — (admin) son talepler
-    if (route === '/leads' && method === 'GET') {
-      const rows = await db.collection('leads').find({}).sort({ createdAt: -1 }).limit(100).toArray()
-      return cors(NextResponse.json(rows.map(({ _id, ...r }) => r)))
-    }
-
-    // POST /api/newsletter — Bülten abonelik
+    // ── POST /api/newsletter — Bülten abonelik ───────────────────────────────
     if (route === '/newsletter' && method === 'POST') {
       const body = await request.json()
-      if (!body?.email) return cors(NextResponse.json({ error: 'email gerekli' }, { status: 400 }))
-      const doc = {
-        id: uuidv4(),
-        type: 'newsletter',
-        email: String(body.email).trim().toLowerCase(),
-        createdAt: new Date(),
+      if (!body?.email) {
+        return cors(NextResponse.json({ error: 'email gerekli' }, { status: 400 }))
       }
-      await db.collection('newsletter').updateOne({ email: doc.email }, { $setOnInsert: doc }, { upsert: true })
+      const doc = {
+        email: String(body.email).trim().toLowerCase(),
+        createdAt: new Date().toLocaleString('tr-TR', { timeZone: 'Europe/Istanbul' }),
+      }
+      sendToGoogleSheets('newsletter', doc).catch(err =>
+        console.error('[Google Sheets] newsletter error:', err)
+      )
       return cors(NextResponse.json({ success: true }))
     }
 
-    // Status endpoints kept for backward compatibility
-    if (route === '/status' && method === 'POST') {
-      const body = await request.json()
-      if (!body.client_name) return cors(NextResponse.json({ error: 'client_name is required' }, { status: 400 }))
-      const statusObj = { id: uuidv4(), client_name: body.client_name, timestamp: new Date() }
-      await db.collection('status_checks').insertOne(statusObj)
-      return cors(NextResponse.json(statusObj))
-    }
-    if (route === '/status' && method === 'GET') {
-      const rows = await db.collection('status_checks').find({}).limit(1000).toArray()
-      return cors(NextResponse.json(rows.map(({ _id, ...r }) => r)))
-    }
-
-    return cors(NextResponse.json({ error: `Route ${route} not found` }, { status: 404 }))
+    return cors(NextResponse.json({ error: `Route ${route} bulunamadı` }, { status: 404 }))
   } catch (error) {
-    console.error('API Error:', error)
-    return cors(NextResponse.json({ error: 'Internal server error' }, { status: 500 }))
+    console.error('[API] Beklenmedik hata:', error)
+    return cors(NextResponse.json({ error: 'Sunucu hatası oluştu' }, { status: 500 }))
   }
 }
 

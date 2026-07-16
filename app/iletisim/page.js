@@ -26,7 +26,17 @@ function IletisimInner() {
   const liveParam = params?.get('live')
   const demoParam = params?.get('demo')
   const typeParam = params?.get('type')
+  const platformParam = params?.get('platform')
   const defaultTab = liveParam ? 'live' : demoParam ? 'demo' : 'contact'
+
+  let defaultPlatform = 'MT5'
+  if (platformParam) {
+    const pLower = platformParam.toLowerCase()
+    if (pLower === 'mt4') defaultPlatform = 'MT4'
+    else if (pLower === 'mt5') defaultPlatform = 'MT5'
+    else if (pLower === 'ctrader') defaultPlatform = 'cTrader'
+    else if (pLower === 'tradingview') defaultPlatform = 'TradingView'
+  }
 
   return (
     <>
@@ -47,10 +57,10 @@ function IletisimInner() {
                 <TabsTrigger value="contact" className="data-[state=active]:bg-brand-accent data-[state=active]:text-[#030B17]">İletişim</TabsTrigger>
               </TabsList>
               <TabsContent value="live" className="mt-6">
-                <AccountForm mode="live" type={typeParam || 'standard'} />
+                <AccountForm mode="live" type={typeParam || 'standard'} defaultPlatform={defaultPlatform} />
               </TabsContent>
               <TabsContent value="demo" className="mt-6">
-                <AccountForm mode="demo" type="demo" />
+                <AccountForm mode="demo" type="demo" defaultPlatform={defaultPlatform} />
               </TabsContent>
               <TabsContent value="contact" className="mt-6">
                 <ContactForm />
@@ -66,7 +76,7 @@ function IletisimInner() {
               <p className="mt-2 text-sm text-slate-600">Uzman Türkçe destek ekibimiz haftanın her günü hizmetinizde.</p>
               <div className="mt-4 space-y-2 text-sm">
         
-                <div className="flex items-center gap-2 text-slate-700"><Mail className="h-4 w-4 text-brand-accent" /><span>destek@capitalmarket.com</span></div>
+                <div className="flex items-center gap-2 text-slate-700"><Mail className="h-4 w-4 text-brand-accent" /><span>support@novatrixmarkets.com</span></div>
               </div>
             </div>
             <div className="rounded-2xl border border-slate-200 bg-white p-6">
@@ -94,12 +104,12 @@ function IletisimInner() {
   )
 }
 
-function AccountForm({ mode = 'demo', type = 'standard' }) {
+function AccountForm({ mode = 'demo', type = 'standard', defaultPlatform = 'MT5' }) {
   const [loading, setLoading] = useState(false)
   const [done, setDone] = useState(false)
   const [form, setForm] = useState({
     fullName: '', email: '', phone: '', country: 'Türkiye',
-    accountType: type, leverage: '1:500', platform: 'MT5', agreed: false,
+    accountType: type, leverage: '1:500', platform: defaultPlatform, agreed: false,
   })
 
   const submit = async (e) => {
